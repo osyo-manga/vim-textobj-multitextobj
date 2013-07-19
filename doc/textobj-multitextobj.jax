@@ -1,0 +1,205 @@
+*textobj-multitextobj.txt*	複数の textobj を1つにまとめる textobj
+
+
+==============================================================================
+概要						*textobj-multitextobj-introduction*
+
+
+*textobj-multitextobj* は複数の textobj を1つにまとめる textobj です。
+|g:textobj_multitextobj_textobjects_group_i| に複数の textobj を設定しておき、
+その中で該当する textobj を使用します。
+この textobj を使用すると複数の textobj を1つのキーマッピングで完結する事がで
+きます。
+
+
+このプラグインを使用する場合は kana 氏が作成された |textobj-user| が必要になり
+ます。
+
+- kana/vim-textobj-user - https://github.com/kana/vim-textobj-user
+
+
+==============================================================================
+設定例						*textobj-multitextobj-customizing*
+
+>
+	" 上から順に textobj を適用していき、該当するものが使用される
+	let g:textobj_multitextobj_textobjects_i = [
+	\	"\<Plug>(textobj-url-i)",
+	\	"\<Plug>(textobj-multiblock-i)",
+	\	"\<Plug>(textobj-function-i)",
+	\	"\<Plug>(textobj-entire-i)",
+	\]
+
+	omap amt <Plug>(textobj-multitextobj-a)
+	omap imt <Plug>(textobj-multitextobj-i)
+	vmap amt <Plug>(textobj-multitextobj-a)
+	vmap imt <Plug>(textobj-multitextobj-i)
+<
+
+
+==============================================================================
+設定						*textobj-multitextobj-setting*
+
+------------------------------------------------------------------------------
+textobj-multitextobj の変数			*textobj-multitextobj-variables*
+
+					*g:textobj_multitextobj_textobjects_i*
+g:textobj_multitextobj_textobjects_i
+	textobj のキーマッピングのリストです。
+	リストの上から textobj を適用していき、該当する textobj が使用されま
+	す。
+	|<Plug>(textobj-multitextobj-i)| で使用されます。
+Example: >
+	" 上から順に textobj を適用しておく
+	let g:textobj_multitextobj_textobjects_i = [
+	\	"i(",
+	\	"i[",
+	\	"\<Plug>(textobj-function-i)",
+	\	"\<Plug>(textobj-indent-i)",
+	\]
+<
+	また、キーマッピングにはリストを設定する事もできます。
+	この場合、リスト内の textobj を全て適用し、一番内側の textobj が使用さ
+	れます。
+Example: >
+	" (), [], "" で一番内側の textobj が適用される
+	let g:textobj_multitextobj_textobjects_a = [
+	\	["i(", "i[", 'i"'],
+	\	"\<Plug>(textobj-function-i)",
+	\	"\<Plug>(textobj-indent-i)",
+	\]
+<
+
+					*g:textobj_multitextobj_textobjects_a*
+g:textobj_multitextobj_textobjects_a
+	|g:textobj_multitextobj_textobjects_i| と同等の設定です。
+	|<Plug>(textobj-multitextobj-a)| で使用覚ます。
+
+					*g:textobj_multitextobj_textobjects_group_i*
+g:textobj_multitextobj_textobjects_group_i
+	|g:textobj_multitextobj_textobjects_i| と同等の値を持った辞書です。
+	キーには 'A' ～ 'E' が使用出来ます。
+	これは
+	|<Plug>(textobj-multitextobj-A-i)| ～ |<Plug>(textobj-multitextobj-D-i)|
+	のマッピングで使用されます。
+Example: >
+	" 予め textobj をまとめておく
+	let g:textobj_multitextobj_textobjects_group_i = {
+	\	"A" : [
+	\		["i(", "i[", 'i"']
+	\	]
+	\}
+	map <Plug>(textobj-bracket-i) <Plug>(textobj-multitextobj-A-i)
+	
+	" まとめておいた textobj を使用
+	let g:textobj_multitextobj_textobjects_i = [
+	\	"\<Plug>(textobj-bracket-i)",
+	\	"\<Plug>(textobj-function-i)",
+	\	"\<Plug>(textobj-entire-i)",
+	\]
+<
+
+					*g:textobj_multitextobj_textobjects_group_a*
+g:textobj_multitextobj_textobjects_group_a
+	|g:textobj_multitextobj_textobjects_group_i| と同等の設定です。
+	|<Plug>(textobj-multitextobj-A-a)| ～ |<Plug>(textobj-multitextobj-D-a)|
+	で使用されます。
+
+					*b:textobj_multitextobj_textobjects_i*
+b:textobj_multitextobj_textobjects_i
+	|g:textobj_multitextobj_textobjects_i| のバッファローカル変数です。
+	|g:textobj_multitextobj_textobjects_i| よりも優先して使用されます。
+
+					*b:textobj_multitextobj_textobjects_a*
+b:textobj_multitextobj_textobjects_a
+	|g:textobj_multitextobj_textobjects_a| のバッファローカル変数です。
+	|g:textobj_multitextobj_textobjects_a| よりも優先して使用されます。
+
+					*b:textobj_multitextobj_textobjects_group_i*
+b:textobj_multitextobj_textobjects_group_i
+	|g:textobj_multitextobj_textobjects_group_i| のバッファローカル変数で
+	す。
+	|g:textobj_multitextobj_textobjects_group_i| よりも優先して使用されま
+	す。
+
+					*b:textobj_multitextobj_textobjects_group_a*
+b:textobj_multitextobj_textobjects_group_a
+	|g:textobj_multitextobj_textobjects_group_a| のバッファローカル変数で
+	す。
+	|g:textobj_multitextobj_textobjects_group_a| よりも優先して使用されま
+	す。
+
+
+==============================================================================
+インターフェース				*textobj-multitextobj-interface*
+
+------------------------------------------------------------------------------
+マッピング					*textobj-multitextobj-mapping*
+
+<Plug>(textobj-multitextobj-i)			*<Plug>(textobj-multitextobj-i)*
+	|g:textobj_multitextobj_textobjects_i| を使用した textobj です。
+
+<Plug>(textobj-multitextobj-A-i)		*<Plug>(textobj-multitextobj-A-i)*
+	|g:textobj_multitextobj_textobjects_group_i| を使用した textobj です。
+	キーは 'A' が使用されます。
+
+<Plug>(textobj-multitextobj-B-i)		*<Plug>(textobj-multitextobj-B-i)*
+	|g:textobj_multitextobj_textobjects_group_i| を使用した textobj です。
+	キーは 'B' が使用されます。
+
+<Plug>(textobj-multitextobj-C-i)		*<Plug>(textobj-multitextobj-C-i)*
+	|g:textobj_multitextobj_textobjects_group_i| を使用した textobj です。
+	キーは 'C' が使用されます。
+
+<Plug>(textobj-multitextobj-D-i)		*<Plug>(textobj-multitextobj-D-i)*
+	|g:textobj_multitextobj_textobjects_group_i| を使用した textobj です。
+	キーは 'D' が使用されます。
+
+<Plug>(textobj-multitextobj-E-i)		*<Plug>(textobj-multitextobj-E-i)*
+	|g:textobj_multitextobj_textobjects_group_i| を使用した textobj です。
+	キーは 'E' が使用されます。
+
+<Plug>(textobj-multitextobj-a)			*<Plug>(textobj-multitextobj-a)*
+	|g:textobj_multitextobj_textobjects_a|| を使用した textobj です。
+
+<Plug>(textobj-multitextobj-A-a)		*<Plug>(textobj-multitextobj-A-a)*
+	|g:textobj_multitextobj_textobjects_group_a| を使用した textobj です。
+	キーは 'A' が使用されます。
+
+<Plug>(textobj-multitextobj-B-a)		*<Plug>(textobj-multitextobj-B-a)*
+	|g:textobj_multitextobj_textobjects_group_a| を使用した textobj です。
+	キーは 'B' が使用されます。
+
+<Plug>(textobj-multitextobj-C-a)		*<Plug>(textobj-multitextobj-C-a)*
+	|g:textobj_multitextobj_textobjects_group_a| を使用した textobj です。
+	キーは 'C' が使用されます。
+
+<Plug>(textobj-multitextobj-D-a)		*<Plug>(textobj-multitextobj-D-a)*
+	|g:textobj_multitextobj_textobjects_group_a| を使用した textobj です。
+	キーは 'D' が使用されます。
+
+<Plug>(textobj-multitextobj-E-a)		*<Plug>(textobj-multitextobj-E-a)*
+	|g:textobj_multitextobj_textobjects_group_a| を使用した textobj です。
+	キーは 'E' が使用されます。
+
+
+==============================================================================
+使用例						*textobj-multitextobj-example*
+
+>
+	" URL や snake_cae に対応した word
+	let g:textobj_multitextobj_textobjects_group_i = {
+	\	"A" : [
+	\		"\<Plug>(textobj-url-i)",
+	\		"\<Plug>(textobj-wiw-i)",
+	\		"iw",
+	\	]
+	\}
+	map <Plug>(textobj-word-i) <Plug>(textobj-multitextobj-A-i)
+	omap imw <Plug>(textobj-word-i)
+	vmap imw <Plug>(textobj-word-i)
+<
+
+
+==============================================================================
+vim:tw=78:fo=tcq2mM:ts=8:ft=help:norl
