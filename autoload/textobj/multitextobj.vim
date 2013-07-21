@@ -125,6 +125,7 @@ function! s:select(textobjects)
 			endif
 			return [wise == "line" ? "V" : "v", s:to_cursorpos(region[0]), s:to_cursorpos(region[1])]
 		endif
+		unlet textobj
 	endfor
 	return 0
 endfunction
