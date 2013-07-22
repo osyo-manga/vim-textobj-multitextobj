@@ -73,14 +73,14 @@ Example: >
 					*g:textobj_multitextobj_textobjects_a*
 g:textobj_multitextobj_textobjects_a
 	|g:textobj_multitextobj_textobjects_i| と同等の設定です。
-	|<Plug>(textobj-multitextobj-a)| で使用覚ます。
+	|<Plug>(textobj-multitextobj-a)| で使用されます。
 
 					*g:textobj_multitextobj_textobjects_group_i*
 g:textobj_multitextobj_textobjects_group_i
 	|g:textobj_multitextobj_textobjects_i| と同等の値を持った辞書です。
 	キーには 'A' ～ 'E' が使用出来ます。
 	これは
-	|<Plug>(textobj-multitextobj-A-i)| ～ |<Plug>(textobj-multitextobj-D-i)|
+	|<Plug>(textobj-multitextobj-A-i)| ～ |<Plug>(textobj-multitextobj-E-i)|
 	のマッピングで使用されます。
 Example: >
 	" 予め textobj をまとめておく
@@ -102,7 +102,7 @@ Example: >
 					*g:textobj_multitextobj_textobjects_group_a*
 g:textobj_multitextobj_textobjects_group_a
 	|g:textobj_multitextobj_textobjects_group_i| と同等の設定です。
-	|<Plug>(textobj-multitextobj-A-a)| ～ |<Plug>(textobj-multitextobj-D-a)|
+	|<Plug>(textobj-multitextobj-A-a)| ～ |<Plug>(textobj-multitextobj-E-a)|
 	で使用されます。
 
 					*b:textobj_multitextobj_textobjects_i*
@@ -187,7 +187,7 @@ b:textobj_multitextobj_textobjects_group_a
 使用例						*textobj-multitextobj-example*
 
 >
-	" URL や snake_cae に対応した word
+	" URL や snake_case に対応した word
 	let g:textobj_multitextobj_textobjects_group_i = {
 	\	"A" : [
 	\		"\<Plug>(textobj-url-i)",
