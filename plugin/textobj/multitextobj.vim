@@ -18,7 +18,7 @@ let g:textobj_multitextobj_textobjects_group_i
 \	= get(g:, "textobj_multitextobj_textobjects_group_i", {})
 
 let g:textobj_multitextobj_textobjects_group_a
-\	= get(g:, "textobj_multitextobj_textobjects_group_i", {})
+\	= get(g:, "textobj_multitextobj_textobjects_group_a", {})
 
 let g:textobj_multitextobj_textobjects_group_list
 \	= get(g:, "textobj_multitextobj_textobjects_group_list", ["A", "B", "C", "D", "E"])
