@@ -129,6 +129,17 @@ b:textobj_multitextobj_textobjects_group_a
 	|g:textobj_multitextobj_textobjects_group_a| よりも優先して使用されま
 	す。
 
+					*g:textobj_multitextobj_textobjects_group_list*
+g:textobj_multitextobj_textobjects_group_list
+	|g:textobj_multitextobj_textobjects_group_i| で使用されるグループ名の
+	リストです。
+	この変数は本プラグインが読み込まれる前に定義する必要があります。
+	ユーザ側でグループ名を変更・拡張を行いたい場合はこの変数を使用してくだ
+	さい。
+Default:>
+	let g:textobj_multitextobj_textobjects_group_list
+	\	= ["A", "B", "C", "D", "E"]
+<
 
 ==============================================================================
 インターフェース				*textobj-multitextobj-interface*
