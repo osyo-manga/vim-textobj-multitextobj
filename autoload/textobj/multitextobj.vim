@@ -61,6 +61,18 @@ function! s:pos_prev(pos)
 endfunction
 
 
+function! s:as_config(config)
+	let default = {
+\		"textobj" : "",
+\		"is_cursor_in" : 0,
+\	}
+	let config
+\		= type(a:config) == type("") ? { "textobj" : a:config }
+\		: type(a:config) == type({}) ? a:config
+\		: {}
+	return extend(default, config)
+endfunction
+
 
 let s:region = []
 let s:wise = ""
@@ -76,18 +88,52 @@ nnoremap <silent> <Plug>(textobj-multitextobj-region-operator)
 
 
 function! textobj#multitextobj#region_from_textobj(textobj)
-	let pos = getpos(".")
 	let s:region = []
+	let config = s:as_config(a:textobj)
 
-	let tmp = &operatorfunc
-	silent execute "normal \<Plug>(textobj-multitextobj-region-operator)" . a:textobj
-	let &operatorfunc = tmp
+	let pos = getpos(".")
+	try
+		let tmp = &operatorfunc
+		silent execute "normal \<Plug>(textobj-multitextobj-region-operator)" . config.textobj
+		let &operatorfunc = tmp
 
-	if !empty(s:region) && !s:pos_less_equal(s:region[0], s:region[1])
-		return ["", []]
+		if !empty(s:region) && !s:pos_less_equal(s:region[0], s:region[1])
+			return ["", []]
+		endif
+		if !empty(s:region) && config.is_cursor_in && (s:pos_less(pos[1:], s:region[0]) || s:pos_less(s:region[1], pos[1:]))
+			return ["", []]
+		endif
+		return deepcopy([s:wise, s:region])
+	finally
+		call setpos(".", pos)
+	endtry
+endfunction
+
+
+function! textobj#multitextobj#regex_from_region(first, last)
+	if a:first == a:last
+		return printf('\%%%dl\%%%dc', a:first[0], a:first[1])
+	elseif a:first[0] == a:last[0]
+		return printf('\%%%dl\%%>%dc\%%<%dc', a:first[0], a:first[1]-1, a:last[1]+1)
+	elseif a:last[0] - a:first[0] == 1
+		return  printf('\%%%dl\%%>%dc', a:first[0], a:first[1]-1)
+\		. "\\|" . printf('\%%%dl\%%<%dc', a:last[0], a:last[1]+1)
+	else
+		return  printf('\%%%dl\%%>%dc', a:first[0], a:first[1]-1)
+\		. "\\|" . printf('\%%>%dl\%%<%dl', a:first[0], a:last[0])
+\		. "\\|" . printf('\%%%dl\%%<%dc', a:last[0], a:last[1]+1)
 	endif
-	call setpos(".", pos)
-	return deepcopy([s:wise, s:region])
+endfunction
+
+
+function! textobj#multitextobj#highlight_from_textobj(textobj, match_group)
+	match none
+	let region = textobj#multitextobj#region_from_textobj(a:textobj)[1]
+	if empty(region)
+		return
+	endif
+	let regex = textobj#multitextobj#regex_from_region(region[0], region[1])
+	execute printf("match %s /%s/", a:match_group, regex)
 endfunction
 
 
@@ -165,6 +211,11 @@ for s:name in g:textobj_multitextobj_textobjects_group_list
 \"		return s:select(s:textobjects_group('textobj_multitextobj_textobjects_group_a', " . string(s:name) . "))\n"
 \"	endfunction"
 endfor
+
+
+function! textobj#multitextobj#i(group)
+	
+endfunction
 
 
 let &cpo = s:save_cpo

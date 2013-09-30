@@ -70,6 +70,21 @@ Example: >
 	\]
 <
 
+	また、このリストには文字列以外に以下のキーを保持した辞書も設定できま
+	す。
+
+	"textobj"      : 使用する textobj のキーマッピング
+	"is_cursor_in" : 1 であればカーソルが textobj の範囲にある場合のみマッ
+			 チする用になる Default : 0
+Example: >
+	" i" は "" の範囲外でも反応するので、それを抑止する
+	let g:textobj_multitextobj_textobjects_a = [
+	\	{ "textobj" : "i'", "is_cursor_in" : 1 },
+	\	'i(',
+	\]
+<
+
+
 					*g:textobj_multitextobj_textobjects_a*
 g:textobj_multitextobj_textobjects_a
 	|g:textobj_multitextobj_textobjects_i| と同等の設定です。
