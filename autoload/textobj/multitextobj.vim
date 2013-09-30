@@ -65,6 +65,7 @@ function! s:as_config(config)
 	let default = {
 \		"textobj" : "",
 \		"is_cursor_in" : 0,
+\		"noremap" : 0,
 \	}
 	let config
 \		= type(a:config) == type("") ? { "textobj" : a:config }
@@ -93,8 +94,11 @@ function! textobj#multitextobj#region_from_textobj(textobj)
 
 	let pos = getpos(".")
 	try
+		silent execute (config.noremap ? 'onoremap' : 'omap') '<expr>'
+\			'<Plug>(textobj-multitextobj-target)' string(config.textobj)
+
 		let tmp = &operatorfunc
-		silent execute "normal \<Plug>(textobj-multitextobj-region-operator)" . config.textobj
+		silent execute "normal \<Plug>(textobj-multitextobj-region-operator)\<Plug>(textobj-multitextobj-target)"
 		let &operatorfunc = tmp
 
 		if !empty(s:region) && !s:pos_less_equal(s:region[0], s:region[1])
