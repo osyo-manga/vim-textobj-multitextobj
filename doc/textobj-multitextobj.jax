@@ -76,6 +76,7 @@ Example: >
 	"textobj"      : 使用する textobj のキーマッピング
 	"is_cursor_in" : 1 であればカーソルが textobj の範囲にある場合のみマッ
 			 チする用になる Default : 0
+	"noremap"      : 1 であれば textobj は再マップされない Default : 0
 Example: >
 	" i" は "" の範囲外でも反応するので、それを抑止する
 	let g:textobj_multitextobj_textobjects_a = [
