@@ -209,6 +209,31 @@ Default:>
 	|g:textobj_multitextobj_textobjects_group_a| を使用した textobj です。
 	キーは 'E' が使用されます。
 
+------------------------------------------------------------------------------
+関数						*textobj-multitextobj-functions*
+
+textobj#multitextobj#mapexpr_i({group})		*textobj#multitextobj#mapexpr_i()*
+	|g:textobj_multitextobj_textobjects_group_i| の {group} を使用したマッ
+	ピングを定義し、<expr> で使用できる文字列を返します。
+	任意の {group} をマッピングしたい場合に使用できます。
+Example: >
+	let g:textobj_multitextobj_textobjects_group_i = {
+	\	"region" : [
+	\		"\<Plug>(textobj-multiblock-i)",
+	\		"\<Plug>(textobj-indent-i)",
+	\		"\<Plug>(textobj-function-i)",
+	\	]
+	\}
+	" g:textobj_multitextobj_textobjects_group_i.region
+	" を参照したマッピング
+	omap <expr> imw textobj#multitextobj#mapexpr_i("region")
+	vmap <expr> imw textobj#multitextobj#mapexpr_i("region")
+<
+
+textobj#multitextobj#mapexpr_a({group})		*textobj#multitextobj#mapexpr_a()*
+	|g:textobj_multitextobj_textobjects_group_a| を参照する以外は
+	|textobj#multitextobj#mapexpr_i()| と同等です。
+
 
 ==============================================================================
 使用例						*textobj-multitextobj-example*

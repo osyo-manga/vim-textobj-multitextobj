@@ -215,11 +215,46 @@ for s:name in g:textobj_multitextobj_textobjects_group_list
 \"		return s:select(s:textobjects_group('textobj_multitextobj_textobjects_group_a', " . string(s:name) . "))\n"
 \"	endfunction"
 endfor
+unlet s:name
 
 
-function! textobj#multitextobj#i(group)
-	
+function! textobj#multitextobj#mapexpr_i(group)
+	let name = printf("<Plug>(textobj-multitextobj%si-i)", a:group)
+	if !empty(maparg(name))
+		return "\<Plug>(textobj-multitextobj". a:group . "i-i)"
+	endif
+	execute
+\"	function! Textobj_multitextobj_select_i_" . a:group . "()\n"
+\"		return s:select(s:textobjects_group('textobj_multitextobj_textobjects_group_i', " . string(a:group) . "))\n"
+\"	endfunction"
+	call textobj#user#plugin('multitextobj' . a:group . "i", {
+\		"-" : {
+\			'select-i': '',
+\			'select-i-function': "Textobj_multitextobj_select_i_" . a:group,
+\		}
+\	})
+	return "\<Plug>(textobj-multitextobj". a:group . "i-i)"
 endfunction
+
+
+function! textobj#multitextobj#mapexpr_a(group)
+	let name = printf("<Plug>(textobj-multitextobj%sa-a)", a:group)
+	if !empty(maparg(name))
+		return "\<Plug>(textobj-multitextobj". a:group . "a-a)"
+	endif
+	execute
+\"	function! Textobj_multitextobj_select_a_" . a:group . "()\n"
+\"		return s:select(s:textobjects_group('textobj_multitextobj_textobjects_group_a', " . string(a:group) . "))\n"
+\"	endfunction"
+	call textobj#user#plugin('multitextobj' . a:group . "a", {
+\		"-" : {
+\			'select-a': '',
+\			'select-a-function': "Textobj_multitextobj_select_a_" . a:group,
+\		}
+\	})
+	return "\<Plug>(textobj-multitextobj". a:group . "a-a)"
+endfunction
+
 
 
 let &cpo = s:save_cpo
