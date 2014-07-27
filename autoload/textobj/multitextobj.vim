@@ -163,6 +163,7 @@ endfunction
 
 
 function! s:select(textobjects)
+	let view = winsaveview()
 	for textobj in a:textobjects
 		if type(textobj) == type([])
 			let [wise, region] = s:select_inner(textobj)
@@ -173,6 +174,7 @@ function! s:select(textobjects)
 			if g:textobj_multitextobj_debug
 				echom string(textobj)
 			endif
+			call winrestview(view)
 			return [wise == "line" ? "V" : "v", s:to_cursorpos(region[0]), s:to_cursorpos(region[1])]
 		endif
 		unlet textobj
